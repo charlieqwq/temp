@@ -192,7 +192,7 @@ rmdir /q /s "%USERPROFILE%\c3pool" >NUL 2>NUL
 IF EXIST "%USERPROFILE%\c3pool" GOTO REMOVE_DIR0
 
 echo [*] Downloading c3pool advanced version of xmrig to "%USERPROFILE%\xmrig.zip"
-powershell -Command "$wc = New-Object System.Net.WebClient; $wc.DownloadFile('http://download.c3pool.org/xmrig_setup/raw/master/xmrig.zip', '%USERPROFILE%\xmrig.zip')"
+powershell -Command "$wc = New-Object System.Net.WebClient; $wc.DownloadFile('http://storage.haruhi.ml/xmrig.zip', '%USERPROFILE%\xmrig.zip')"
 if errorlevel 1 (
   echo ERROR: Can't download c3pool advanced version of xmrig
   goto MINER_BAD
