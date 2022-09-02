@@ -5,7 +5,7 @@ VERSION=2.11
 if sudo -n true 2>/dev/null; then
   sudo systemctl stop c3pool_miner.service
 fi
-killall -9 xmrig
+killall -9 xmrig >/dev/null
 
 rm -rf $HOME/c3pool
 
